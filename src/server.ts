@@ -9,7 +9,7 @@ async function start() {
   const allowedOrigins = [
     "http://localhost:5173",
     "http://hys-expor-stands.com.br/",
-    "https://www.seudominio.com",
+    "https://localhost:3333",
   ];
 
   await app.register(cors, {
