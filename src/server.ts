@@ -7,7 +7,7 @@ async function start() {
   const port = Number(process.env.PORT || 3333);
 
   await app.register(cors, {
-    origin: ["https://hys-expor-stands.com.br"],
+    origin: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
