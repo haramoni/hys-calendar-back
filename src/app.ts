@@ -3,6 +3,8 @@ import cors from "@fastify/cors";
 import jwt from "@fastify/jwt";
 import { eventRoutes } from "./modules/events/event-routes";
 import { authRoutes } from "./modules/auth/auth.routes";
+import { peopleRoutes } from "./modules/people/people-routes";
+import { logbookRoutes } from "./modules/logbook/logbook-routes";
 
 export async function buildApp() {
   const app = Fastify({
@@ -30,6 +32,14 @@ export async function buildApp() {
   });
 
   await app.register(eventRoutes, {
+    prefix: "/api",
+  });
+
+  await app.register(peopleRoutes, {
+    prefix: "/api",
+  });
+
+  await app.register(logbookRoutes, {
     prefix: "/api",
   });
 

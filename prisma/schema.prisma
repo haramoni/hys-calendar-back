@@ -1,11 +1,19 @@
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
   engineType = "binary"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model people {
+  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String     @db.VarChar(255)
+  created_at DateTime   @default(now()) @db.Timestamp(6)
+  updated_at DateTime   @default(now()) @db.Timestamp(6)
+  logbooks   logbooks[]
 }
 
 model calendar_months {
@@ -49,9 +57,28 @@ model stand_events {
   @@index([calendar_month_id], map: "idx_stand_events_calendar_month_id")
 }
 
+model logbooks {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  value      Decimal  @db.Decimal(10, 2)
+  date       DateTime @db.Date
+  reason     String   @db.VarChar(255)
+  person_id  String   @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  people     people   @relation(fields: [person_id], references: [id], onUpdate: NoAction, map: "fk_logbooks_person")
+
+  @@index([date], map: "idx_logbooks_date")
+  @@index([person_id], map: "idx_logbooks_person_id")
+}
+
 enum event_stage {
   MONTAGEM
   EVENTO
   DESMONTAGEM
   EVENTO_COMPLETO
+}
+
+enum logbook_type {
+  ENTRADA
+  SAIDA
 }
